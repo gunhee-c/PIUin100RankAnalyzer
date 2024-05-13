@@ -299,7 +299,7 @@ def color_rows(row, userAkey):
     # Use RGBA for semi-transparent colors (the last number is the alpha value)
     # The alpha value can be adjusted between 0 (fully transparent) and 1 (fully opaque)
     # Here we set it to 0.5 to blend the color with the white background, making it lighter
-    color = 'rgba(125, 50, 50, 0.5)' if row['Winner'] == userAkey else 'rgba(50,50,125, 0.5)'
+    color = 'rgba(125, 50, 50, 0.5)' if row['Winner'] != userAkey else 'rgba(50,50,125, 0.5)'
     return ['background-color: ' + color] * len(row)
 
 def aggregate_dataframe(userA_data, userB_data, userA, userB):
