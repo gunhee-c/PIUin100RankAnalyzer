@@ -2,6 +2,7 @@ from in100_utils import *
 
 import streamlit as st
 import matplotlib.pyplot as plt
+import numpy as np
 
 def main():
     st.header("PIU in 100 data Analyzer")
@@ -102,9 +103,13 @@ def show_rank(ranking_list):
 def show_scatterplot(ranks_by_level):
     # Create a figure for the scatter plot
     fig, ax = plt.subplots(figsize=(6, 4))
-
+    noise_strength = 0.5
+    noisy_values = np.array(values) + np.random.normal(0, noise_strength, size=len(values))
     for category, values in ranks_by_level.items():
-        ax.scatter([category] * len(values), values, label=category, s=20)
+        categories = []
+        for i in range(len(values)):
+            categories.append(category + noisy_values[i])
+        ax.scatter(categories, values, label=category, s=20)
 
     ax.set_title('Ranking by Level')
     ax.set_xlabel('Level')
