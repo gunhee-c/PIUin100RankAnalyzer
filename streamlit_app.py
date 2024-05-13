@@ -61,8 +61,12 @@ def is_user_valid(username, userID):
     else:
         user = return_user_with_name(username + " " + userID)
         if user == None:
-            st.error("User is invalid or no in100 rank data found")
-            st.stop()
+            if list((search_user(("username"), exact = True)).values())[0] != 0:
+                st.error("User ID is invalid. Please provide the correct ID")
+                st.stop()
+            else:
+                st.error("User is invalid or no in100 rank data found")
+                st.stop()
         else:
             st.success("User is valid")
     return user
