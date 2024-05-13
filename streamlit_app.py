@@ -5,6 +5,45 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random as rd
 
+
+def gather_userdata(key_name):
+    user_name, user_id = get_user_info(key_name)
+    is_user_valid(user_name, user_id)
+    if user_id == "": 
+        user = return_user_with_name(user_name)
+    else:
+        user_name_full = user_name + " " + user_id
+        user = return_user_with_name(user_name_full)
+    st.write("You can filter the data by mode, level, song type, and version")
+    mode, min_level, max_level, songtype_list, version_list = get_filter_values(key_name)
+    #toggle_score, toggle_sort = get_score_and_sort("single")
+    user_key = user["username"] + " " + user["userID"]    
+    return user_key, mode, min_level, max_level, songtype_list, version_list
+
+
+def gather_userdata_of_two(key_name):
+    user_name1, user_id1 = get_user_info(key_name+"1")
+    is_user_valid(user_name1, user_id1)
+    user_name2, user_id2 = get_user_info(key_name+"2")
+    is_user_valid(user_name2, user_id2)
+    if user_id1 == "": 
+        user1 = return_user_with_name(user_name1)
+    else:
+        user_name_full_1 = user_name1 + " " + user_id1
+        user1 = return_user_with_name(user_name_full_1)
+    if user_id2 == "":
+        user2 = return_user_with_name(user_name2)
+    else:
+        user_name_full_2 = user_name2 + " " + user_id2
+        user2 = return_user_with_name(user_name_full_2)
+    
+    st.write("You can filter the data by mode, level, song type, and version")
+    mode, min_level, max_level, songtype_list, version_list = get_filter_values(key_name)
+    #toggle_score, toggle_sort = get_score_and_sort("single")
+    user_key1 = user1["username"] + " " + user1["userID"]
+    user_key2 = user2["username"] + " " + user2["userID"]
+    return user_key1, mode, min_level, max_level, songtype_list, version_list
+
 def main():
     st.header("PIU in 100 data Analyzer")
     st.write("This is a simple web app that analyzes the data from the PIU in 100 rank dataset.")
@@ -26,10 +65,10 @@ def main():
             for s in strs:
                 st.write(s)
     with single_player:
+        '''
         st.write("This is the single player analysis page")
         st.write("Enter the user that you want to analyze")
         user_name, user_id = get_user_info("single")
-
         is_user_valid(user_name, user_id)
         if user_id == "": 
             user = return_user_with_name(user_name)
@@ -40,10 +79,12 @@ def main():
         mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
         #toggle_score, toggle_sort = get_score_and_sort("single")
         user_key = user["username"] + " " + user["userID"]
+        '''
+        user_key, mode, min_level, max_level, songtype_list, version_list = gather_userdata("single")
+        
         st.divider()
         data_pandas, count_user, achievement_rate, ranks, ranks_by_level = rankdata(user_key, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list)
         
-
         count_user_with_level = {}
         for key in count_user.keys():
             count_user_with_level["lv " + str(key)] = count_user[key]
@@ -53,12 +94,18 @@ def main():
         show_rank(ranks)
         show_scatterplot(ranks_by_level)
         
-        #rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all, sortme = "score", sort_all = False)
-        #data_sorted_pandas, achievement_rate, ranks, ranks_by_level
+
     with two_player:
-        st.write("This is the player comparison page")
+
+        user_key1, user_key2, mode, min_level, max_level, songtype_list, version_list = gather_userdata_of_two("two")
+        st.divider()
+
+        user_comparison, total_count_comparison, aggregated_dataframe = rankdata_compare(user_key1, user_key2, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list)
+        st.dataframe(aggregated_dataframe)
     with update:
         st.write("This is the update page")
+
+
 
 def show_achievement(achievements):
     levels = list(achievements.keys())
@@ -117,6 +164,8 @@ def show_scatterplot(ranks_by_level):
     ax.legend(title='Levels', loc='upper right', bbox_to_anchor=(1.3, 1))
     # Display the plot in Streamlit
     st.pyplot(fig)
+
+
 
 def expander_with_list(expander_name, user_name, expand = True):
     with st.expander(expander_name):
