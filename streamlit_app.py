@@ -1,25 +1,132 @@
 from in100_utils import *
 
 import streamlit as st
-st.header("PIU in 100 data Analyzer")
-st.write("This is a simple web app that analyzes the data from the PIU in 100 rank dataset.")
-st.write("Currently the data is up to 05/09/2024")
+
+def main():
+    st.header("PIU in 100 data Analyzer")
+    st.write("This is a simple web app that analyzes the data from the PIU in 100 rank dataset.")
+    st.write("Currently the data is up to 05/09/2024")
 
 
-find_user, single_player, two_player, update= st.tabs(["Find User", "Single Player Analysis", "Player comparison", "updates"])
+    find_user, single_player, two_player, update= st.tabs(["Find User", "Single Player Analysis", "Player comparison", "updates"])
 
-with find_user:
-    st.write("in this page you can search a user's name and ID")
-    st.header("Find User")
-    user_name = st.text_input("Enter the user's name")
-    if user_name != "":
-        #user_info = search_user(user_name)
-        strs = print_search_user(user_name)
-        for s in strs:
-            st.write(s)
-with single_player:
-    st.write("This is the single player analysis page")
-with two_player:
-    st.write("This is the player comparison page")
-with update:
-    st.write("This is the update page")
+    with find_user:
+        st.write("in this page you can search a user's name and ID")
+        st.header("Find User")
+        st.write("This will provide user's ID and his/her ranking data")
+        st.write("All users including your response will be shown")
+        st.write("If there are other users with same username, you need to provide your userID to get your data.")
+        user_name = st.text_input("Enter the user's name")
+        if user_name != "":
+            #user_info = search_user(user_name)
+            strs = print_search_user(user_name)
+            for s in strs:
+                st.write(s)
+    with single_player:
+        st.write("This is the single player analysis page")
+        st.write("Enter the user that you want to analyze")
+        user_name, user_id = get_user_info()
+        if user_id == "": 
+            user = return_user_with_name(user_name)
+        else:
+            user_name_full = user_name + " " + user_id
+            user = return_user_with_name(user_name_full)
+        st.write("You can filter the data by mode, level, song type, and version")
+        mode, min_level, max_level, songtype_list, version_list = get_filter_values()
+    with two_player:
+        st.write("This is the player comparison page")
+    with update:
+        st.write("This is the update page")
+
+def get_user_info():
+    col1, col2 = st.columns(2)
+    with col1:
+        user_name = st.text_input("Enter the user's name")
+    with col2:
+        user_id = st.text_input("Enter the user's ID")
+    st.write("if your ID is unique among the users with the same name, you can leave the ID blank")
+    st.write("you can skip # in userID")
+    if user_id[0] != "#":
+        user_id = "#" + user_id
+    return user_name, user_id
+
+def get_filter_values():
+    mode, min_level, max_level = three_filter_inputs()
+    songtype_list = checkboxes_songtype()
+    version_list = checkboxes_version()
+    return mode, min_level, max_level, songtype_list, version_list
+
+def checkboxes_songtype():
+    col1, col2, col3, col4 = st.columns(4)
+    col1 = st.checkbox("Arcade", value=True)
+    col2 = st.checkbox("Remix", value=True)
+    col3 = st.checkbox("Full Song", value=True)
+    col4 = st.checkbox("Short cut", value=True)
+    checkbox_list = []
+    if col1:
+        checkbox_list.append("Arcade")
+    if col2:
+        checkbox_list.append("Remix")
+    if col3:
+        checkbox_list.append("Full Song")
+    if col4:
+        checkbox_list.append("Short cut")
+
+    return checkbox_list
+
+def checkboxes_version():
+    col1, col2, col3 = st.columns(3)
+    col1 = st.checkbox("PHOENIX", value=True)
+    col2 = st.checkbox("XX", value=True)
+    col3 = st.checkbox("OLD", value=True)
+    checkbox_list = []
+    if col1:
+        checkbox_list.append("PHOENIX")
+    if col2:
+        checkbox_list.append("XX")
+    if col3:
+        checkbox_list.append("OLD")
+    return checkbox_list
+
+def three_filter_inputs():
+    # Create a three-column layout
+    col1, col2, col3 = st.columns(3)
+    # SelectBox for Mode in the first column
+    with col1:
+        mode = st.selectbox(
+            'Choose the game mode:',
+            ('Full', 'Single', 'Double'),
+            index = 0
+        )
+
+    # Numeric input for minimum level in the second column
+    with col2:
+        min_level = st.number_input(
+            'Minimum Level',
+            min_value=20,  # Minimum level possible
+            max_value=28,  # Maximum level possible
+            value=20,  # Default value
+            step=1  # Increment step
+        )
+
+    # Numeric input for maximum level in the third column
+    with col3:
+        max_level = st.number_input(
+            'Maximum Level',
+            min_value=20,  # Minimum level possible
+            max_value=28,  # Maximum level possible
+            value=28,  # Default value
+            step=1  # Increment step
+        )
+
+    # Validate input to ensure max_level is not less than min_level
+    if max_level < min_level:
+        st.error('Maximum level should be greater than or equal to minimum level.')
+
+    return mode, min_level, max_level
+
+
+if __name__ == "__main__":
+    main()
+
+    
