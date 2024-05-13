@@ -49,7 +49,7 @@ def main():
         st.dataframe(data_pandas)
         show_achievement(achievement_rate)
         show_rank(ranks)
-        st.write("Ranks by level: ", ranks_by_level)
+        show_scatterplot(ranks_by_level)
         
         #rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all, sortme = "score", sort_all = False)
         #data_sorted_pandas, achievement_rate, ranks, ranks_by_level
@@ -95,6 +95,18 @@ def show_rank(ranking_list):
     ax.set_xlabel('Rankings (1-100)')
     ax.set_ylabel('Frequency')
     ax.set_xticks(range(0, 101, 10))  # Adjust the x-ticks for better visualization
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
+
+def show_scatterplot(ranks_by_level):
+    # Create a figure for the scatter plot
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.scatter(ranks_by_level['level'], ranks_by_level['rank'], color='skyblue')
+
+    ax.set_title('Ranking by Level')
+    ax.set_xlabel('Level')
+    ax.set_ylabel('Rank')
 
     # Display the plot in Streamlit
     st.pyplot(fig)
