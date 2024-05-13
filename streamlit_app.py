@@ -6,10 +6,15 @@ st.write("This is a simple web app that analyzes the data from the PIU in 100 ra
 st.write("Currently the data is up to 05/09/2024")
 
 
-readme, single_player, two_player, update= st.tabs(["Readme", "Single Player Analysis", "Player comparison", "updates"])
+find_user, single_player, two_player, update= st.tabs(["Find User", "Single Player Analysis", "Player comparison", "updates"])
 
-with readme:
-    st.write("리드미는나중에")
+with find_user:
+    st.write("in this page you can search a user's name and ID")
+    st.header("Find User")
+    user_name = st.text_input("Enter the user's name")
+    if user_name != "":
+        user_id = search_user(user_name)
+        st.write(user_id)
 with single_player:
     st.write("This is the single player analysis page")
 with two_player:
