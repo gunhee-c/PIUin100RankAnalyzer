@@ -44,7 +44,7 @@ def main():
 def is_user_valid(username, userID):
     if username == None: return False
     if userID == "":
-        strs = print_search_user(username, exact = True)
+        strs = search_user(username, exact = True)
         if len(strs) == 0:
             st.error("User is invalid or no in100 rank data found")
         elif len(strs) > 1:
