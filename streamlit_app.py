@@ -56,7 +56,7 @@ def show_achievement(achievements):
     levels = list(achievements.keys())
     achievement_values = list(achievements.values())
     chart_type = st.selectbox('Select Chart Type', ['Bar Chart', 'Line Chart'])
-
+    max_achievement = max(achievement_values)
     fig, ax = plt.subplots()
 
     if chart_type == 'Bar Chart':
@@ -70,7 +70,7 @@ def show_achievement(achievements):
         plt.xlabel('Levels')
         plt.ylabel('Achievement')
         plt.title('Achievement by Level')
-        ax.set_ylim(0, 1)  # Set y-axis to show scale from 0 to 1
+        ax.set_ylim(0, max_achievement*1.2)  # Set y-axis to show scale from 0 to 1
         plt.grid(True)
 
     # Use Streamlit to render the figure
