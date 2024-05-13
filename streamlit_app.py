@@ -64,7 +64,7 @@ def show_achievement(achievements):
         plt.xlabel('Levels')
         plt.ylabel('Achievement')
         plt.title('Achievement by Level')
-        ax.set_ylim(0, 1)  # Set y-axis to show scale from 0 to 1
+        ax.set_ylim(0, max_achievement*1.2)  # Set y-axis to show scale from 0 to 1
     elif chart_type == 'Line Chart':
         ax.plot(levels, achievement_values, marker='o', linestyle='-', color='deepskyblue')
         plt.xlabel('Levels')
