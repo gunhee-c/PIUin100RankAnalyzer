@@ -48,7 +48,7 @@ def get_user_info(key_name):
         user_id = st.text_input("Enter the user's ID", key= key_name +"ID")
     st.write("if your ID is unique among the users with the same name, you can leave the ID blank")
     st.write("you can skip # in userID")
-    if len(user_id[0] > 0 ) and user_id[0] != "#":
+    if user_id != None and len(user_id) > 0 and user_id[0] != "#":
         user_id = "#" + user_id
     return user_name, user_id
 
