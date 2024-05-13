@@ -6,7 +6,7 @@ st.write("This is a simple web app that analyzes the data from the PIU in 100 ra
 st.write("Currently the data is up to 05/09/2024")
 
 
-main_tabs = st.tabs["Readme", "Single Player Analysis", "Player comaparison", "updates"]
+main_tabs = st.tabs(["Readme", "Single Player Analysis", "Player comaparison", "updates"])
 
 if main_tabs == "Readme":
     st.write("리드미는나중에")
