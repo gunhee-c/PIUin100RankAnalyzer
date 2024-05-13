@@ -146,19 +146,23 @@ def checkboxes_songtype(key_name):
     if check1:
         checkbox_list.append("Arcade")
     else:
-        checkbox_list.remove("Arcade")
+        if "Arcade" in checkbox_list:
+            checkbox_list.remove("Arcade")
     if check2:
         checkbox_list.append("Remix")
     else:
-        checkbox_list.remove("Remix")
+        if "Remix" in checkbox_list:
+            checkbox_list.remove("Remix")
     if check3:
         checkbox_list.append("Full Song")
     else:
-        checkbox_list.remove("Full Song")
+        if "Full Song" in checkbox_list:
+            checkbox_list.remove("Full Song")
     if check4:
         checkbox_list.append("Short cut")
     else:
-        checkbox_list.remove("Short cut")
+        if "Short cut" in checkbox_list:
+            checkbox_list.remove("Short cut")
 
     return checkbox_list
 
@@ -175,15 +179,18 @@ def checkboxes_version(key_name):
     if check1:
         checkbox_list.append("PHOENIX")
     else:
-        checkbox_list.remove("PHOENIX")
+        if "PHOENIX" in checkbox_list:
+            checkbox_list.remove("PHOENIX")
     if check2:
         checkbox_list.append("XX")
     else:
-        checkbox_list.remove("XX")
+        if "XX" in checkbox_list:
+            checkbox_list.remove("XX")
     if check3:
         checkbox_list.append("OLD")
     else:
-        checkbox_list.remove("OLD")
+        if "OLD" in checkbox_list:
+            checkbox_list.remove("OLD")
     return checkbox_list
 
 def three_filter_inputs(key_name):
