@@ -38,7 +38,7 @@ def main():
         mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
         #toggle_score, toggle_sort = get_score_and_sort("single")
         user_key = user["username"] + " " + user["userID"]
-        st.divider("--------------------")
+        st.divider()
         data_pandas, count_user, achievement_rate, ranks, ranks_by_level = rankdata(user_key, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list)
         for key in count_user.keys():
             st.write(f"Rank data in level {key} : {count_user[key]}")
