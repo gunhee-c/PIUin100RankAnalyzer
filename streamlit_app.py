@@ -60,10 +60,14 @@ def get_filter_values(key_name):
 
 def checkboxes_songtype(key_name):
     col1, col2, col3, col4 = st.columns(4)
-    col1 = st.checkbox("Arcade", value=True, key=key_name+"Arcade")
-    col2 = st.checkbox("Remix", value=True, key=key_name+"Remix")
-    col3 = st.checkbox("Full Song", value=True, key=key_name+"Full Song")
-    col4 = st.checkbox("Short cut", value=True, key=key_name+"Short cut")
+    with col1: 
+        st.checkbox("Arcade", value=True, key=key_name+"Arcade")
+    with col2:
+        st.checkbox("Remix", value=True, key=key_name+"Remix")
+    with col3:
+        st.checkbox("Full Song", value=True, key=key_name+"Full Song")
+    with col4:
+        st.checkbox("Short cut", value=True, key=key_name+"Short cut")
     checkbox_list = []
     if col1:
         checkbox_list.append("Arcade")
