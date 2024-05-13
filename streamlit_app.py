@@ -26,19 +26,24 @@ def main():
         st.write("This is the single player analysis page")
         st.write("Enter the user that you want to analyze")
         user_name, user_id = get_user_info("single")
-        st.write("User name: ", user_name) 
-        st.write("User ID: ", user_id)
+
         is_user_valid(user_name, user_id)
         if user_id == "": 
-            st.header("User is found")
             user = return_user_with_name(user_name)
         else:
-            st.header("ID is written")
             user_name_full = user_name + " " + user_id
             user = return_user_with_name(user_name_full)
         st.write("You can filter the data by mode, level, song type, and version")
         mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
-
+        toggle_score, toggle_sort = get_score_and_sort("single")
+        data_pandas, achievement_rate, ranks, ranks_by_level = rankdata(user, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list, sortme = toggle_score, sort_all = toggle_sort)
+        st.datafrane(data_pandas)
+        st.write("Achievement rate: ", achievement_rate)
+        st.write("Ranks: ", ranks)
+        st.write("Ranks by level: ", ranks_by_level)
+        
+        #rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all, sortme = "score", sort_all = False)
+        #data_sorted_pandas, achievement_rate, ranks, ranks_by_level
     with two_player:
         st.write("This is the player comparison page")
     with update:
@@ -49,7 +54,24 @@ def expander_with_list(expander_name, user_name, expand = True):
         strs = print_search_user(user_name, exact = True)
         for s in strs:
             st.write(s)
-
+def get_score_and_sort(key_name):
+    col1, col2 = st.columns(2)
+    if toggle_score:
+        score_toggle = "Sort by score"
+    else:
+        score_toggle = "Sort by rank"
+    if toggle_sort:
+        sort_toggle = "Sort by level first"
+    else:
+        sort_toggle = "Sort Everything"
+    with col1:
+        toggle_score = st.checkbox(score_toggle, key = key_name + "toggle_score", value = True)
+    with col2:
+        toggle_sort = st.checkbox(sort_toggle, key = key_name + "toggle_sort", value = False)
+    sortby = "score"
+    if toggle_score == False:
+        sortby = "rank"
+    return toggle_score, toggle_sort
 
 def is_user_valid(username, userID):
     if username == "":
@@ -80,9 +102,9 @@ def is_user_valid(username, userID):
 def get_user_info(key_name):
     col1, col2 = st.columns(2)
     with col1:
-        user_name = st.text_input("Enter the user's name", key=key_name + "NAME", value="")
+        user_name = st.text_input("user's name", key=key_name + "NAME", value="")
     with col2:
-        user_id = st.text_input("Enter the user's ID", key= key_name +"ID", value="")
+        user_id = st.text_input("user's ID (you can skip #)", key= key_name +"ID", value="")
     st.write("if your ID is unique among the users with the same name, you can leave the ID blank")
     st.write("you can skip # in userID")
     if user_id != "":
