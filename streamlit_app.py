@@ -56,6 +56,7 @@ def expander_with_list(expander_name, user_name, expand = True):
             st.write(s)
 def get_score_and_sort(key_name):
     col1, col2 = st.columns(2)
+    toggle_score, toggle_sort = True, False
     if toggle_score:
         score_toggle = "Sort by score"
     else:
@@ -71,7 +72,7 @@ def get_score_and_sort(key_name):
     sortby = "score"
     if toggle_score == False:
         sortby = "rank"
-    return toggle_score, toggle_sort
+    return sortby, toggle_sort
 
 def is_user_valid(username, userID):
     if username == "":
