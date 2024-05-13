@@ -439,8 +439,8 @@ def rankdata_compare(userA, userB,mode = "Full", levels = [20,28], songtype = so
     userA_raw = return_user_with_name(userA)
     userB_raw = return_user_with_name(userB)
     userAdata, userBdata, userAcount, userBcount, total_filtered = rankdata_compare_raw(userA, userB, mode, levels, songtype, version)
-    userA_data_sorted, userA_achievement_rate, userA_ranks, userA_ranks_by_level = rankdata(userA, mode, levels, songtype, version)
-    userB_data_sorted, userB_achievement_rate, userB_ranks, userB_ranks_by_level = rankdata(userB, mode, levels, songtype, version)
+    userA_data_sorted, userA_counts, userA_achievement_rate, userA_ranks, userA_ranks_by_level = rankdata(userA, mode, levels, songtype, version)
+    userB_data_sorted, userB_counts, userB_achievement_rate, userB_ranks, userB_ranks_by_level = rankdata(userB, mode, levels, songtype, version)
     user_comparison = [[userA_data_sorted, userB_data_sorted], [userA_achievement_rate, userB_achievement_rate], [userA_ranks, userB_ranks], [userA_ranks_by_level, userB_ranks_by_level]]
     total_count_comparison = rankdata_compare_total_counts(userAcount, userBcount, userAdata, userBdata)
     aggregated_dataframe = aggregate_dataframe(userAdata, userBdata, userA_raw, userB_raw)
