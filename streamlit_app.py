@@ -26,6 +26,8 @@ def main():
         st.write("This is the single player analysis page")
         st.write("Enter the user that you want to analyze")
         user_name, user_id = get_user_info("single")
+        if is_user_valid(user_name, user_id) == False:
+            st.stop("User not found yet")
         if user_id == "": 
             user = return_user_with_name(user_name)
         else:
@@ -34,14 +36,27 @@ def main():
         st.write("You can filter the data by mode, level, song type, and version")
         mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
 
-        if user == None:
-            st.stop("User not found yet")
     with two_player:
         st.write("This is the player comparison page")
     with update:
         st.write("This is the update page")
 
-
+def is_user_valid(username, userID):
+    if username == None: return False
+    if userID == "":
+        strs = print_search_user(username, exact = True)
+        if len(strs) == 0:
+            st.error("User is invalid or no in100 rank data found")
+        elif len(strs) > 1:
+            st.error("There are multiple users with the same name. Please provide the userID")
+            expander_usernames = st.expander("Users with the same name")
+            with expander_usernames:
+                for s in strs:
+                    st.write(s)
+        user = return_user_with_name(username)
+    else:
+        user = return_user_with_name(username + " " + userID)
+    return user
 
 def get_user_info(key_name):
     col1, col2 = st.columns(2)
