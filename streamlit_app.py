@@ -25,43 +25,45 @@ def main():
     with single_player:
         st.write("This is the single player analysis page")
         st.write("Enter the user that you want to analyze")
-        user_name, user_id = get_user_info()
+        user_name, user_id = get_user_info("single")
         if user_id == "": 
             user = return_user_with_name(user_name)
         else:
             user_name_full = user_name + " " + user_id
             user = return_user_with_name(user_name_full)
         st.write("You can filter the data by mode, level, song type, and version")
-        mode, min_level, max_level, songtype_list, version_list = get_filter_values()
+        mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
     with two_player:
         st.write("This is the player comparison page")
     with update:
         st.write("This is the update page")
 
-def get_user_info():
+
+
+def get_user_info(key_name):
     col1, col2 = st.columns(2)
     with col1:
-        user_name = st.text_input("Enter the user's name")
+        user_name = st.text_input("Enter the user's name", key=key_name + "NAME")
     with col2:
-        user_id = st.text_input("Enter the user's ID")
+        user_id = st.text_input("Enter the user's ID", key= key_name +"ID")
     st.write("if your ID is unique among the users with the same name, you can leave the ID blank")
     st.write("you can skip # in userID")
     if user_id[0] != "#":
         user_id = "#" + user_id
     return user_name, user_id
 
-def get_filter_values():
-    mode, min_level, max_level = three_filter_inputs()
-    songtype_list = checkboxes_songtype()
-    version_list = checkboxes_version()
+def get_filter_values(key_name):
+    mode, min_level, max_level = three_filter_inputs(key_name)
+    songtype_list = checkboxes_songtype(key_name)
+    version_list = checkboxes_version(key_name)
     return mode, min_level, max_level, songtype_list, version_list
 
-def checkboxes_songtype():
+def checkboxes_songtype(key_name):
     col1, col2, col3, col4 = st.columns(4)
-    col1 = st.checkbox("Arcade", value=True)
-    col2 = st.checkbox("Remix", value=True)
-    col3 = st.checkbox("Full Song", value=True)
-    col4 = st.checkbox("Short cut", value=True)
+    col1 = st.checkbox("Arcade", value=True, key=key_name+"Arcade")
+    col2 = st.checkbox("Remix", value=True, key=key_name+"Remix")
+    col3 = st.checkbox("Full Song", value=True, key=key_name+"Full Song")
+    col4 = st.checkbox("Short cut", value=True, key=key_name+"Short cut")
     checkbox_list = []
     if col1:
         checkbox_list.append("Arcade")
@@ -74,11 +76,11 @@ def checkboxes_songtype():
 
     return checkbox_list
 
-def checkboxes_version():
+def checkboxes_version(key_name):
     col1, col2, col3 = st.columns(3)
-    col1 = st.checkbox("PHOENIX", value=True)
-    col2 = st.checkbox("XX", value=True)
-    col3 = st.checkbox("OLD", value=True)
+    col1 = st.checkbox("PHOENIX", value=True, key=key_name+"PHOENIX")
+    col2 = st.checkbox("XX", value=True, key=key_name+"XX")
+    col3 = st.checkbox("OLD", value=True, key=key_name+"OLD")
     checkbox_list = []
     if col1:
         checkbox_list.append("PHOENIX")
@@ -88,7 +90,7 @@ def checkboxes_version():
         checkbox_list.append("OLD")
     return checkbox_list
 
-def three_filter_inputs():
+def three_filter_inputs(key_name):
     # Create a three-column layout
     col1, col2, col3 = st.columns(3)
     # SelectBox for Mode in the first column
@@ -96,7 +98,8 @@ def three_filter_inputs():
         mode = st.selectbox(
             'Choose the game mode:',
             ('Full', 'Single', 'Double'),
-            index = 0
+            index = 0,
+            key = key_name + "mode"
         )
 
     # Numeric input for minimum level in the second column
@@ -106,7 +109,8 @@ def three_filter_inputs():
             min_value=20,  # Minimum level possible
             max_value=28,  # Maximum level possible
             value=20,  # Default value
-            step=1  # Increment step
+            step=1,  # Increment step
+            key = key_name + "min_level"
         )
 
     # Numeric input for maximum level in the third column
@@ -116,7 +120,8 @@ def three_filter_inputs():
             min_value=20,  # Minimum level possible
             max_value=28,  # Maximum level possible
             value=28,  # Default value
-            step=1  # Increment step
+            step=1,  # Increment step
+            key = key_name + "max_level"
         )
 
     # Validate input to ensure max_level is not less than min_level
