@@ -1,6 +1,7 @@
 from in100_utils import *
 
 import streamlit as st
+import matplotlib.pyplot as plt
 
 def main():
     st.header("PIU in 100 data Analyzer")
@@ -40,7 +41,7 @@ def main():
 
         data_pandas, achievement_rate, ranks, ranks_by_level = rankdata(user_key, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list)
         st.dataframe(data_pandas)
-        st.write("Achievement rate: ", achievement_rate)
+        show_achievement(achievement_rate)
         st.write("Ranks: ", ranks)
         st.write("Ranks by level: ", ranks_by_level)
         
@@ -51,11 +52,35 @@ def main():
     with update:
         st.write("This is the update page")
 
+def show_achievement(achievements):
+    levels = list(achievements.keys())
+    achievement_values = list(achievements.values())
+    chart_type = st.selectbox('Select Chart Type', ['Bar Chart', 'Line Chart'])
+
+    fig, ax = plt.subplots()
+
+    if chart_type == 'Bar Chart':
+        ax.bar(levels, achievement_values, color='skyblue')
+        plt.xlabel('Levels')
+        plt.ylabel('Achievement')
+        plt.title('Achievement by Level')
+        ax.set_ylim(0, 1)  # Set y-axis to show scale from 0 to 1
+    elif chart_type == 'Line Chart':
+        ax.plot(levels, achievement_values, marker='o', linestyle='-', color='deepskyblue')
+        plt.xlabel('Levels')
+        plt.ylabel('Achievement')
+        plt.title('Achievement by Level')
+        ax.set_ylim(0, 1)  # Set y-axis to show scale from 0 to 1
+        plt.grid(True)
+
+    # Use Streamlit to render the figure
+    st.pyplot(fig)
 def expander_with_list(expander_name, user_name, expand = True):
     with st.expander(expander_name):
         strs = print_search_user(user_name, exact = True)
         for s in strs:
             st.write(s)
+
 def get_score_and_sort(key_name):
     col1, col2 = st.columns(2)
     toggle_score, toggle_sort = True, False
@@ -134,7 +159,6 @@ def checkboxes_songtype(key_name):
     
     # Return the keys of the versions where the checkbox is checked
     return [songtype for songtype, checked in songtypes.items() if checked]
-
 
 def checkboxes_version(key_name):
     st.write("Choose the version (song)")
