@@ -49,7 +49,8 @@ def expander_with_list(expander_name, list_of_strs, key_name):
 def is_user_valid(username, userID):
     if username == "":
         st.error("Please enter the user's name")
-    list_of_users = list((search_user(("username"), exact = True)).values())
+        st.stop()
+    list_of_users = list((search_user(username, exact = True)).values())
     if len(list_of_users) == 0:
         st.error("User is not found in ranking data")
         st.stop()
