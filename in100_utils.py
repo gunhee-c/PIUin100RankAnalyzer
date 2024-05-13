@@ -384,8 +384,11 @@ def refine_solo_dataframe(dataframe_raw):
 def rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all, sortme = "score", sort_all = False):
     data_user,count_user,total_user = rankdata_raw(username, mode, levels, songtype, version)
     data_sorted = sort_rankdata(data_user, sortme, sort_all)
-    data_sorted_pandas_raw = pd.DataFrame(data_sorted)
-    data_sorted_pandas = refine_solo_dataframe(data_sorted_pandas_raw)
+    if len(data_sorted) != 0:
+        data_sorted_pandas_raw = pd.DataFrame(data_sorted)
+        data_sorted_pandas = refine_solo_dataframe(data_sorted_pandas_raw)
+    else:
+        data_sorted_pandas = pd.DataFrame()
     achievement_rate = {}
     for item in count_user:
         if total_user[item] == 0: 

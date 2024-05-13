@@ -35,24 +35,14 @@ def main():
             user = return_user_with_name(user_name_full)
         st.write("You can filter the data by mode, level, song type, and version")
         mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
-        toggle_score, toggle_sort = get_score_and_sort("single")
+        #toggle_score, toggle_sort = get_score_and_sort("single")
         user_key = user["username"] + " " + user["userID"]
-        with st.expander("Debug"):
-            st.write("User key: ", user_key)
-            st.write("Mode: ", mode)
-            st.write("Level range: ", min_level, max_level)
-            st.write("Song type: ", songtype_list)
-            st.write("Version: ", version_list)
-            st.write("Sort by: ", toggle_score)
-            st.write("Sort all: ", toggle_sort)
-        pressme_single = st.button("Analyze the data")
-        if pressme_single:
-            
-            data_pandas, achievement_rate, ranks, ranks_by_level = rankdata(user_key, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list, sortme = toggle_score, sort_all = toggle_sort)
-            st.dataframe(data_pandas)
-            st.write("Achievement rate: ", achievement_rate)
-            st.write("Ranks: ", ranks)
-            st.write("Ranks by level: ", ranks_by_level)
+
+        data_pandas, achievement_rate, ranks, ranks_by_level = rankdata(user_key, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list)
+        st.dataframe(data_pandas)
+        st.write("Achievement rate: ", achievement_rate)
+        st.write("Ranks: ", ranks)
+        st.write("Ranks by level: ", ranks_by_level)
         
         #rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all, sortme = "score", sort_all = False)
         #data_sorted_pandas, achievement_rate, ranks, ranks_by_level
