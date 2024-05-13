@@ -104,7 +104,7 @@ def show_rank(ranking_list):
 def show_scatterplot(ranks_by_level):
     # Create a figure for the scatter plot
     fig, ax = plt.subplots(figsize=(6, 4))
-    noise_strength = 0.5
+    noise_strength = 0.2
     for category, values in ranks_by_level.items():
         categories = []
         for i in range(len(values)):
