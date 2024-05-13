@@ -60,7 +60,7 @@ def get_filter_values(key_name):
 
 def checkboxes_songtype(key_name):
     st.write("Choose the song type")
-    col1, col2, col3, col4 = st.columns(4,gap=10)
+    col1, col2, col3, col4 = st.columns(4,gap="small")
     with col1: 
         st.checkbox("Arcade", value=True, key=key_name+"Arcade")
     with col2:
@@ -101,7 +101,7 @@ def checkboxes_version(key_name):
 
 def three_filter_inputs(key_name):
     # Create a three-column layout
-    col1, col2, col3 = st.columns(3,gap="small")
+    col1, col2, col3 = st.columns(3)
     # SelectBox for Mode in the first column
     with col1:
         mode = st.selectbox(
