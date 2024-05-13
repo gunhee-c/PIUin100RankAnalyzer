@@ -134,64 +134,31 @@ def get_filter_values(key_name):
 def checkboxes_songtype(key_name):
     st.write("Choose the song type")
     col1, col2, col3, col4 = st.columns(4,gap="small")
-    with col1: 
-        check1 = st.checkbox("Arcade", value=True, key=key_name+"Arcade")
-    with col2:
-        check2 = st.checkbox("Remix", value=True, key=key_name+"Remix")
-    with col3:
-        check3 = st.checkbox("Full Song", value=True, key=key_name+"Full Song")
-    with col4:
-        check4 = st.checkbox("Short cut", value=True, key=key_name+"Short cut")
-    checkbox_list = []
-    if check1:
-        checkbox_list.append("Arcade")
-    else:
-        if "Arcade" in checkbox_list:
-            checkbox_list.remove("Arcade")
-    if check2:
-        checkbox_list.append("Remix")
-    else:
-        if "Remix" in checkbox_list:
-            checkbox_list.remove("Remix")
-    if check3:
-        checkbox_list.append("Full Song")
-    else:
-        if "Full Song" in checkbox_list:
-            checkbox_list.remove("Full Song")
-    if check4:
-        checkbox_list.append("Short cut")
-    else:
-        if "Short cut" in checkbox_list:
-            checkbox_list.remove("Short cut")
 
-    return checkbox_list
+    songtypes = {
+        "Arcade": col1.checkbox("Arcade", value=True, key=f"{key_name}_Arcade"),
+        "Remix": col2.checkbox("Remix", value=True, key=f"{key_name}_Remix"),
+        "Full Song": col3.checkbox("Full Song", value=True, key=f"{key_name}_Full Song"),
+        "Short Cut": col4.checkbox("Short Cut", value=True, key=f"{key_name}_Short Cut")
+    }
+    
+    # Return the keys of the versions where the checkbox is checked
+    return [songtype for songtype, checked in songtypes.items() if checked]
+
 
 def checkboxes_version(key_name):
-    st.write("Choose the version(song)")
-    col1, col2, col3 = st.columns(3,gap="small")
-    with col1: 
-        check1 = st.checkbox("PHOENIX", value=True, key=key_name+"PHOENIX")
-    with col2: 
-        check2 = st.checkbox("XX", value=True, key=key_name+"XX")
-    with col3:
-        check3 = st.checkbox("OLD", value=True, key=key_name+"OLD")
-    checkbox_list = []
-    if check1:
-        checkbox_list.append("PHOENIX")
-    else:
-        if "PHOENIX" in checkbox_list:
-            checkbox_list.remove("PHOENIX")
-    if check2:
-        checkbox_list.append("XX")
-    else:
-        if "XX" in checkbox_list:
-            checkbox_list.remove("XX")
-    if check3:
-        checkbox_list.append("OLD")
-    else:
-        if "OLD" in checkbox_list:
-            checkbox_list.remove("OLD")
-    return checkbox_list
+    st.write("Choose the version (song)")
+    col1, col2, col3 = st.columns(3, gap="small")
+    
+    # Initialize checkboxes and collect their statuses in a dictionary
+    versions = {
+        "PHOENIX": col1.checkbox("PHOENIX", value=True, key=f"{key_name}_PHOENIX"),
+        "XX": col2.checkbox("XX", value=True, key=f"{key_name}_XX"),
+        "OLD": col3.checkbox("OLD", value=True, key=f"{key_name}_OLD")
+    }
+    
+    # Return the keys of the versions where the checkbox is checked
+    return [version for version, checked in versions.items() if checked]
 
 def three_filter_inputs(key_name):
     # Create a three-column layout
