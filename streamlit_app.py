@@ -55,10 +55,12 @@ def is_user_valid(username, userID):
         st.error("User is not found in ranking data")
         st.stop()
     if userID == "":
+        st.header("User is found")
         if len(list_of_users[0]) > 1:
             st.error("There are multiple users with the same name. Please provide the userID")
             expander_with_list("Users with the same name", list_of_users[0], "username_duplicates_single")
             st.stop()
+
         user = return_user_with_name(username)
         st.success("User is valid")
     else:
