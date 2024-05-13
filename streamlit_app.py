@@ -6,13 +6,13 @@ st.write("This is a simple web app that analyzes the data from the PIU in 100 ra
 st.write("Currently the data is up to 05/09/2024")
 
 
-main_tabs = st.tabs(["Readme", "Single Player Analysis", "Player comaparison", "updates"])
+readme, single_player, two_player, update= st.tabs(["Readme", "Single Player Analysis", "Player comparison", "updates"])
 
-if main_tabs == "Readme":
+with readme:
     st.write("리드미는나중에")
-elif main_tabs == "Single Player Analysis":
+with single_player:
     st.write("This is the single player analysis page")
-elif main_tabs == "Player comaparison":
+with two_player:
     st.write("This is the player comparison page")
-elif main_tabs == "updates":
+with update:
     st.write("This is the update page")
