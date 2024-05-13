@@ -33,6 +33,9 @@ def main():
             user = return_user_with_name(user_name_full)
         st.write("You can filter the data by mode, level, song type, and version")
         mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
+
+        if user == None:
+            st.stop("User not found yet")
     with two_player:
         st.write("This is the player comparison page")
     with update:
