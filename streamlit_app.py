@@ -13,8 +13,8 @@ with find_user:
     st.header("Find User")
     user_name = st.text_input("Enter the user's name")
     if user_name != "":
-        user_info = search_user(user_name)
-        strs = print_search_user(user_info)
+        #user_info = search_user(user_name)
+        strs = print_search_user(user_name)
         for s in strs:
             st.write(s)
 with single_player:
