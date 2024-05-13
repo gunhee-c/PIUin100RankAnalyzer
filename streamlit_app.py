@@ -42,7 +42,7 @@ def gather_userdata_of_two(key_name):
     #toggle_score, toggle_sort = get_score_and_sort("single")
     user_key1 = user1["username"] + " " + user1["userID"]
     user_key2 = user2["username"] + " " + user2["userID"]
-    return user_key1, mode, min_level, max_level, songtype_list, version_list
+    return user_key1, user_key2, mode, min_level, max_level, songtype_list, version_list
 
 def main():
     st.header("PIU in 100 data Analyzer")
