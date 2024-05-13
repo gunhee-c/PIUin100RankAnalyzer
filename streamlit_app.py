@@ -40,6 +40,7 @@ def main():
         user_key = user["username"] + " " + user["userID"]
         st.divider()
         data_pandas, count_user, achievement_rate, ranks, ranks_by_level = rankdata(user_key, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list)
+        st.write(str(count_user))
         for key in count_user.keys():
             st.write(f"Rank data in level {key} : {count_user[key]}")
         st.dataframe(data_pandas)
