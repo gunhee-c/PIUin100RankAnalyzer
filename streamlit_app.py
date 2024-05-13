@@ -65,21 +65,7 @@ def main():
             for s in strs:
                 st.write(s)
     with single_player:
-        '''
-        st.write("This is the single player analysis page")
-        st.write("Enter the user that you want to analyze")
-        user_name, user_id = get_user_info("single")
-        is_user_valid(user_name, user_id)
-        if user_id == "": 
-            user = return_user_with_name(user_name)
-        else:
-            user_name_full = user_name + " " + user_id
-            user = return_user_with_name(user_name_full)
-        st.write("You can filter the data by mode, level, song type, and version")
-        mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
-        #toggle_score, toggle_sort = get_score_and_sort("single")
-        user_key = user["username"] + " " + user["userID"]
-        '''
+
         user_key, mode, min_level, max_level, songtype_list, version_list = gather_userdata("single")
         
         st.divider()
