@@ -54,9 +54,11 @@ def main():
 
 def show_achievement(achievements):
     levels = list(achievements.keys())
-    achievement_values = list(achievements.values())
-    for item in achievements.items():
-        item *= 100
+    achievement_values_raw = list(achievements.values())
+    achievement_values = []
+    for item in achievement_values_raw:
+        achievement_values.append(item*100)
+
     chart_type = st.selectbox('Select Chart Type', ['Bar Chart', 'Line Chart'])
     max_achievement = max(achievement_values)
     fig, ax = plt.subplots()
