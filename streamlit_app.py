@@ -78,9 +78,9 @@ def get_score_and_sort(key_name):
     else:
         sort_toggle = "Sort Everything"
     with col1:
-        toggle_score = st.checkbox(score_toggle, key = key_name + "toggle_score", value = True)
+        toggle_score = st.toggle(score_toggle, key = key_name + "toggle_score", value = True)
     with col2:
-        toggle_sort = st.checkbox(sort_toggle, key = key_name + "toggle_sort", value = False)
+        toggle_sort = st.toggle(sort_toggle, key = key_name + "toggle_sort", value = False)
     sortby = "score"
     if toggle_score == False:
         sortby = "rank"
@@ -135,27 +135,27 @@ def checkboxes_songtype(key_name):
     st.write("Choose the song type")
     col1, col2, col3, col4 = st.columns(4,gap="small")
     with col1: 
-        st.checkbox("Arcade", value=True, key=key_name+"Arcade")
+        check1 = st.checkbox("Arcade", value=True, key=key_name+"Arcade")
     with col2:
-        st.checkbox("Remix", value=True, key=key_name+"Remix")
+        check2 = st.checkbox("Remix", value=True, key=key_name+"Remix")
     with col3:
-        st.checkbox("Full Song", value=True, key=key_name+"Full Song")
+        check3 = st.checkbox("Full Song", value=True, key=key_name+"Full Song")
     with col4:
-        st.checkbox("Short cut", value=True, key=key_name+"Short cut")
+        check4 = st.checkbox("Short cut", value=True, key=key_name+"Short cut")
     checkbox_list = []
-    if col1:
+    if check1:
         checkbox_list.append("Arcade")
     else:
         checkbox_list.remove("Arcade")
-    if col2:
+    if check2:
         checkbox_list.append("Remix")
     else:
         checkbox_list.remove("Remix")
-    if col3:
+    if check3:
         checkbox_list.append("Full Song")
     else:
         checkbox_list.remove("Full Song")
-    if col4:
+    if check4:
         checkbox_list.append("Short cut")
     else:
         checkbox_list.remove("Short cut")
@@ -166,21 +166,21 @@ def checkboxes_version(key_name):
     st.write("Choose the version(song)")
     col1, col2, col3 = st.columns(3,gap="small")
     with col1: 
-        st.checkbox("PHOENIX", value=True, key=key_name+"PHOENIX")
+        check1 = st.checkbox("PHOENIX", value=True, key=key_name+"PHOENIX")
     with col2: 
-        st.checkbox("XX", value=True, key=key_name+"XX")
+        check2 = st.checkbox("XX", value=True, key=key_name+"XX")
     with col3:
-        st.checkbox("OLD", value=True, key=key_name+"OLD")
+        check3 = st.checkbox("OLD", value=True, key=key_name+"OLD")
     checkbox_list = []
-    if col1:
+    if check1:
         checkbox_list.append("PHOENIX")
     else:
         checkbox_list.remove("PHOENIX")
-    if col2:
+    if check2:
         checkbox_list.append("XX")
     else:
         checkbox_list.remove("XX")
-    if col3:
+    if check3:
         checkbox_list.append("OLD")
     else:
         checkbox_list.remove("OLD")
