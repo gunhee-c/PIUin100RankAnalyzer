@@ -59,7 +59,8 @@ def get_filter_values(key_name):
     return mode, min_level, max_level, songtype_list, version_list
 
 def checkboxes_songtype(key_name):
-    col1, col2, col3, col4 = st.columns(4)
+    st.write("Choose the song type")
+    col1, col2, col3, col4 = st.columns(4,gap=10)
     with col1: 
         st.checkbox("Arcade", value=True, key=key_name+"Arcade")
     with col2:
@@ -81,10 +82,14 @@ def checkboxes_songtype(key_name):
     return checkbox_list
 
 def checkboxes_version(key_name):
-    col1, col2, col3 = st.columns(3)
-    col1 = st.checkbox("PHOENIX", value=True, key=key_name+"PHOENIX")
-    col2 = st.checkbox("XX", value=True, key=key_name+"XX")
-    col3 = st.checkbox("OLD", value=True, key=key_name+"OLD")
+    st.write("Choose the version(song)")
+    col1, col2, col3 = st.columns(3,gap=10)
+    with col1: 
+        st.checkbox("PHOENIX", value=True, key=key_name+"PHOENIX")
+    with col2: 
+        st.checkbox("XX", value=True, key=key_name+"XX")
+    with col3:
+        st.checkbox("OLD", value=True, key=key_name+"OLD")
     checkbox_list = []
     if col1:
         checkbox_list.append("PHOENIX")
