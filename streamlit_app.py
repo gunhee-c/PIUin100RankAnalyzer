@@ -104,7 +104,7 @@ def show_scatterplot(ranks_by_level):
     fig, ax = plt.subplots(figsize=(6, 4))
 
     for category, values in ranks_by_level.items():
-        ax.scatter([category] * len(values), values, label=category)
+        ax.scatter([category] * len(values), values, label=category, s=20)
 
     ax.set_title('Ranking by Level')
     ax.set_xlabel('Level')
