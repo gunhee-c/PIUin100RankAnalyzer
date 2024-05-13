@@ -42,7 +42,7 @@ def main():
         data_pandas, achievement_rate, ranks, ranks_by_level = rankdata(user_key, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list)
         st.dataframe(data_pandas)
         show_achievement(achievement_rate)
-        st.write("Ranks: ", ranks)
+        show_rank(ranks)
         st.write("Ranks by level: ", ranks_by_level)
         
         #rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all, sortme = "score", sort_all = False)
@@ -61,7 +61,7 @@ def show_achievement(achievements):
 
     chart_type = st.selectbox('Select Chart Type', ['Bar Chart', 'Line Chart'])
     max_achievement = max(achievement_values)
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6, 4))
 
     if chart_type == 'Bar Chart':
         ax.bar(levels, achievement_values, color='skyblue')
@@ -79,6 +79,20 @@ def show_achievement(achievements):
 
     # Use Streamlit to render the figure
     st.pyplot(fig)
+
+def show_rank(ranking_list):
+    # Create a figure for the histogram
+    fig, ax = plt.subplots(figsize=(6, 4))
+    ax.hist(ranking_list, bins=range(1, 101, 10), edgecolor='black')  # Bins represent intervals of 10
+
+    ax.set_title('Distribution of Rankings')
+    ax.set_xlabel('Rankings (1-100)')
+    ax.set_ylabel('Frequency')
+    ax.set_xticks(range(0, 101, 10))  # Adjust the x-ticks for better visualization
+
+    # Display the plot in Streamlit
+    st.pyplot(fig)
+
 def expander_with_list(expander_name, user_name, expand = True):
     with st.expander(expander_name):
         strs = print_search_user(user_name, exact = True)
