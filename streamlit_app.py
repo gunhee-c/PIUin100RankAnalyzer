@@ -44,10 +44,11 @@ def main():
     with update:
         st.write("This is the update page")
 
-def expander_with_list(expander_name, list_of_strs, expand = True):
+def expander_with_list(expander_name, user_name, expand = True):
     with st.expander(expander_name):
-        for s in list_of_strs:
-            st.write("userID: " + s[0] + ", cleardata: " +  str(s[1]))
+        strs = print_search_user(user_name, exact = True)
+        for s in strs:
+            st.write(s)
 
 
 def is_user_valid(username, userID):
@@ -62,7 +63,7 @@ def is_user_valid(username, userID):
         st.header("User is found")
         if len(list_of_users[0]) > 1:
             st.error("There are multiple users with the same name. Please provide the userID")
-            expander_with_list("Users with the same name", list_of_users[0])
+            expander_with_list("Users with the same name", username)
             st.stop()
 
         user = return_user_with_name(username)
