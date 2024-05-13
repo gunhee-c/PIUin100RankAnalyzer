@@ -47,7 +47,7 @@ def main():
 def expander_with_list(expander_name, list_of_strs, expand = True):
     with st.expander(expander_name):
         for s in list_of_strs:
-            st.write("userID: " + s["0"] + ", cleardata: " +  s["1"])
+            st.write("userID: " + s[0] + ", cleardata: " +  s[1])
 
 
 def is_user_valid(username, userID):
