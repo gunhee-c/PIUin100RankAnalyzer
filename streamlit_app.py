@@ -28,8 +28,10 @@ def main():
         user_name, user_id = get_user_info("single")
         is_user_valid(user_name, user_id)
         if user_id == "": 
+            st.header("User is found")
             user = return_user_with_name(user_name)
         else:
+            st.header("ID is written")
             user_name_full = user_name + " " + user_id
             user = return_user_with_name(user_name_full)
         st.write("You can filter the data by mode, level, song type, and version")
