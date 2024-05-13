@@ -37,7 +37,7 @@ def main():
         mode, min_level, max_level, songtype_list, version_list = get_filter_values("single")
         toggle_score, toggle_sort = get_score_and_sort("single")
         data_pandas, achievement_rate, ranks, ranks_by_level = rankdata(user, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list, sortme = toggle_score, sort_all = toggle_sort)
-        st.datafrane(data_pandas)
+        st.dataframe(data_pandas)
         st.write("Achievement rate: ", achievement_rate)
         st.write("Ranks: ", ranks)
         st.write("Ranks by level: ", ranks_by_level)
