@@ -26,6 +26,8 @@ def main():
         st.write("This is the single player analysis page")
         st.write("Enter the user that you want to analyze")
         user_name, user_id = get_user_info("single")
+        st.write("User name: ", user_name) 
+        st.write("User ID: ", user_id)
         is_user_valid(user_name, user_id)
         if user_id == "": 
             st.header("User is found")
