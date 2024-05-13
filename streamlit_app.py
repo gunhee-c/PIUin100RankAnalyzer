@@ -40,33 +40,31 @@ def main():
     with update:
         st.write("This is the update page")
 
+def expander_with_list(expander_name, list_of_strs, key_name):
+    expander = st.expander(expander_name, key = key_name)
+    with expander:
+        for s in list_of_strs:
+            st.write(s)
+
 def is_user_valid(username, userID):
-    if username == None:
+    if username == "":
         st.error("Please enter the user's name")
+    list_of_users = list((search_user(("username"), exact = True)).values())
+    if len(list_of_users) == 0:
+        st.error("User is not found in ranking data")
+        st.stop()
     if userID == "":
-        list_of_users = list((search_user(("username"), exact = True)).values())
-        if len(list_of_users) == 0:
-            st.error("User is invalid or no in100 rank data found")
+        if len(list_of_users[0]) > 1:
+            st.error("There are multiple users with the same name. Please provide the userID")
+            expander_with_list("Users with the same name", list_of_users[0], "username_duplicates_single")
             st.stop()
-        else:
-            if len(list_of_users[0]) > 1:
-                st.error("There are multiple users with the same name. Please provide the userID")
-                expander_usernames = st.expander("There are other users with the same name")
-                with expander_usernames:
-                    for s in list_of_users:
-                        st.write(s)
-                st.stop()
         user = return_user_with_name(username)
         st.success("User is valid")
     else:
         user = return_user_with_name(username + " " + userID)
         if user == None:
-            if list((search_user((username), exact = True)).values())[0] != 0:
-                st.error("User ID is invalid. Please provide the correct ID")
-                st.stop()
-            else:
-                st.error("User is invalid or no in100 rank data found")
-                st.stop()
+            st.error("User ID is invalid. Please provide the correct ID")
+            st.stop()
         else:
             st.success("User is valid")
     return user
@@ -74,13 +72,14 @@ def is_user_valid(username, userID):
 def get_user_info(key_name):
     col1, col2 = st.columns(2)
     with col1:
-        user_name = st.text_input("Enter the user's name", key=key_name + "NAME")
+        user_name = st.text_input("Enter the user's name", key=key_name + "NAME", value="")
     with col2:
-        user_id = st.text_input("Enter the user's ID", key= key_name +"ID")
+        user_id = st.text_input("Enter the user's ID", key= key_name +"ID", value="")
     st.write("if your ID is unique among the users with the same name, you can leave the ID blank")
     st.write("you can skip # in userID")
-    if user_id != None and len(user_id) > 0 and user_id[0] != "#":
-        user_id = "#" + user_id
+    if user_id != "":
+        if user_id[0] != "#":
+            user_id = "#" + user_id
     return user_name, user_id
 
 def get_filter_values(key_name):
