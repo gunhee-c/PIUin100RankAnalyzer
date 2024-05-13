@@ -26,8 +26,7 @@ def main():
         st.write("This is the single player analysis page")
         st.write("Enter the user that you want to analyze")
         user_name, user_id = get_user_info("single")
-        if is_user_valid(user_name, user_id) == False:
-            st.stop("User not found yet")
+        is_user_valid(user_name, user_id)
         if user_id == "": 
             user = return_user_with_name(user_name)
         else:
@@ -42,20 +41,30 @@ def main():
         st.write("This is the update page")
 
 def is_user_valid(username, userID):
-    if username == None: return False
+    if username == None:
+        st.error("Please enter the user's name")
     if userID == "":
-        strs = search_user(username, exact = True)
-        if len(strs) == 0:
+        list_of_users = list((search_user(("username"), exact = True)).values())
+        if len(list_of_users) == 0:
             st.error("User is invalid or no in100 rank data found")
-        elif len(strs) > 1:
-            st.error("There are multiple users with the same name. Please provide the userID")
-            expander_usernames = st.expander("Users with the same name")
-            with expander_usernames:
-                for s in strs:
-                    st.write(s)
+            st.stop()
+        else:
+            if len(list_of_users[0]) > 1:
+                st.error("There are multiple users with the same name. Please provide the userID")
+                expander_usernames = st.expander("There are other users with the same name")
+                with expander_usernames:
+                    for s in list_of_users:
+                        st.write(s)
+                st.stop()
         user = return_user_with_name(username)
+        st.success("User is valid")
     else:
         user = return_user_with_name(username + " " + userID)
+        if user == None:
+            st.error("User is invalid or no in100 rank data found")
+            st.stop()
+        else:
+            st.success("User is valid")
     return user
 
 def get_user_info(key_name):
