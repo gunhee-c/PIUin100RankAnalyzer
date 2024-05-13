@@ -407,7 +407,7 @@ def rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all,
             ranks_by_level[item["level"]].append(item["rank"])
     for item in ranks_by_level:
         ranks_by_level[item].sort()
-    return data_sorted_pandas, achievement_rate, ranks, ranks_by_level
+    return data_sorted_pandas, count_user, achievement_rate, ranks, ranks_by_level
 
 def rankdata_compare_total_counts(userAcount, userBcount, userAdata, userBdata):
     userA_total_count = total_count(userAcount)
