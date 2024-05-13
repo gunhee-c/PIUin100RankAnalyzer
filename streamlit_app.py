@@ -102,12 +102,14 @@ def show_rank(ranking_list):
 def show_scatterplot(ranks_by_level):
     # Create a figure for the scatter plot
     fig, ax = plt.subplots(figsize=(6, 4))
-    ax.scatter(ranks_by_level['level'], ranks_by_level['rank'], color='skyblue')
+
+    for category, values in ranks_by_level.items():
+        ax.scatter([category] * len(values), values, label=category)
 
     ax.set_title('Ranking by Level')
     ax.set_xlabel('Level')
     ax.set_ylabel('Rank')
-
+    ax.legend(title='Levels', loc='upper right', bbox_to_anchor=(1.3, 1))
     # Display the plot in Streamlit
     st.pyplot(fig)
 
