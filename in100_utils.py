@@ -10,9 +10,11 @@ current_patch = "1.0.8"
 
 user_ranks = json.load(open(f"datamodules/in100RankData/{current_date}/user_data.json"))
 
+user_names_dict = json.load(open(f"datamodules/{current_version}/{current_patch}/user_dict.json"))
+
 total_steps_count = json.load(open(f"datamodules/{current_version}/{current_patch}/total_steps_count.json"))
 
-duplicate_users = json.load(open("duplicate_users.json"))
+
 
 #level_weight = {20: 8, 21: 10, 22: 14, 23: 22, 24: 38, 25: 70, 26: 134, 27: 262, 28: 518}
 level_weight = {20: 8, 21: 10, 22: 14, 23: 20, 24: 28, 25: 38, 26: 50, 27: 64, 28: 70}
@@ -217,28 +219,30 @@ def sort_rankdata(data, sort_key = "score", sort_all = False):
             total_list.sort(key = lambda x: x['rank'])
     return total_list
 
+#유저명에 해당하는 유저의 ID 리스트를 반환
+def return_user_id_list(username):
+    return user_names_dict[username.upper()]
+
+#해당 str을 포함하는 유저들의 ID 리스트와 클리어데이터(숫자만)를 반환
 def search_user(username, exact = False):
     usernames = {}   
     search_term = username.upper()
 
     # Iterate through each user in the user ranks list
-    for user in user_ranks:
+    for user in user_names_dict:
         # Check if the search term is in the current username in the list
-        if search_term in user["username"].upper():
-            cleardata = filter_rankcount(user)
+        if search_term in user:
+            user_id_list = user_names_dict[user]
+            cleardata = []
+            for user_id in user_id_list:
+                user_cleardata = filter_rankcount(return_user(user, user_id))
+                cleardata.append(user_cleardata)
+            user_cleardata_dict = dict(zip(user_id_list, cleardata))
             # Add or append the userID to the usernames dictionary
             if exact == False:
-                if user["username"] not in usernames:
-                    usernames[user["username"]] = [[user["userID"], cleardata]]
-                else:
-                    usernames[user["username"]].append([user["userID"], cleardata])
-            else:
-                if user["username"] == search_term:
-                    if user["username"] not in usernames:
-                        usernames[user["username"]] = [[user["userID"], cleardata]]
-                    else:
-                        usernames[user["username"]].append([user["userID"], cleardata])
-            
+                usernames[user] = user_cleardata_dict
+            elif user == search_term:
+                usernames[user] = user_cleardata_dict
     return usernames
 
 def print_search_user(username, exact = False):
@@ -247,7 +251,7 @@ def print_search_user(username, exact = False):
     for user in printme:
         strs.append(user)
         for item in printme[user]:
-            strs.append(item[0]+": "+str(item[1]))
+            strs.append(item +" // cleardata: " +str(printme[user][item]))
         strs.append("")
     return strs
 
@@ -261,24 +265,11 @@ def return_user(username, userID):
 
 def return_user_with_name(username):
     username_upper = username.upper()
-    if username_upper in duplicate_users:
-        str1 = "Duplicate users found"
-        str2 = "Please search with the following format: [username] [userID]"
-        str3 = "The First User is selected among: \n"
-        str4 = print_search_user(username_upper, exact = True)
-        print(str1)
-        print(str2)
-        print(str3)
-        for item in str4:
-            print(item)
-        strs = [str1, str2, str3, str4]
-        userID = search_user(username_upper, exact = True)[username_upper][0][0]
-        return return_user(username_upper, userID)
     if " " in username:
         username, userID = username.split(" ")
         username_upper = username.upper()
     else:
-        userID = search_user(username_upper, exact = True)[username_upper][0][0]
+        userID = return_user_id_list(username_upper)[0]
     return return_user(username_upper, userID)
 
 def rankdata_raw(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all):
