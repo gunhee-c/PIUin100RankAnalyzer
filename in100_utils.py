@@ -294,7 +294,7 @@ def color_rows(row, userAkey):
     # The alpha value can be adjusted between 0 (fully transparent) and 1 (fully opaque)
     # Here we set it to 0.5 to blend the color with the white background, making it lighter
     if row["Winner"] == "DRAW":
-        color = 'rgba(125, 50, 125, 0.5)'
+        color = 'rgba(160, 160, 60, 0.5)'
     else:
         color = 'rgba(125, 50, 50, 0.5)' if row['Winner'] != userAkey else 'rgba(50,50,125, 0.5)'
     return ['background-color: ' + color] * len(row)
