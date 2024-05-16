@@ -10,7 +10,7 @@ current_patch = "1.0.8"
 
 user_ranks = json.load(open(f"datamodules/in100RankData/{current_date}/user_data.json"))
 
-user_names_dict = json.load(open(f"datamodules/{current_version}/{current_patch}/user_dict.json"))
+user_names_dict = json.load(open(f"datamodules/in100RankData/{current_date}/user_dict.json"))
 
 total_steps_count = json.load(open(f"datamodules/{current_version}/{current_patch}/total_steps_count.json"))
 
