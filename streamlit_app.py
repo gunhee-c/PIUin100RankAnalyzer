@@ -188,7 +188,6 @@ def is_user_valid(username, userID):
         st.error("User is not found in ranking data")
         st.stop()
     if userID == "":
-        st.header("User is found")
         if len(list_of_users[0]) > 1:
             st.error("There are multiple users with the same name. Please provide the userID")
             expander_with_list("Users with the same name", username)
@@ -212,7 +211,6 @@ def get_user_info(key_name):
     with col2:
         user_id = st.text_input("user's ID (you can skip #)", key= key_name +"ID", value="")
     st.write("if your ID is unique among the users with the same name, you can leave the ID blank")
-    st.write("you can skip # in userID")
     if user_id != "":
         if user_id[0] != "#":
             user_id = "#" + user_id
