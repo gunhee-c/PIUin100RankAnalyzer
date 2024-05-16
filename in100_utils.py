@@ -293,7 +293,10 @@ def color_rows(row, userAkey):
     # Use RGBA for semi-transparent colors (the last number is the alpha value)
     # The alpha value can be adjusted between 0 (fully transparent) and 1 (fully opaque)
     # Here we set it to 0.5 to blend the color with the white background, making it lighter
-    color = 'rgba(125, 50, 50, 0.5)' if row['Winner'] != userAkey else 'rgba(50,50,125, 0.5)'
+    if row["Winner"] == "DRAW":
+        color = 'rgba(125, 50, 125, 0.5)'
+    else:
+        color = 'rgba(125, 50, 50, 0.5)' if row['Winner'] != userAkey else 'rgba(50,50,125, 0.5)'
     return ['background-color: ' + color] * len(row)
 
 def aggregate_dataframe(userA_data, userB_data, userA, userB):
@@ -372,6 +375,11 @@ def refine_solo_dataframe(dataframe_raw):
     dataframe_raw["mode/level"] = levelmode
 
     dataframe_new = dataframe_raw[["song", "mode/level", "rank", "score"]]
+    return dataframe_new
+
+def color_by_level_and_rank(dataframe_raw):
+    dataframe_new = dataframe_raw.copy()
+    dataframe_new = dataframe_new.style.applymap(lambda x: 'color: red' if x == 1 else 'color: blue' if x == 2 else 'color: green' if x == 3 else 'color: black')
     return dataframe_new
 
 #data_sorted_pandas, achievement_rate, ranks, ranks_by_level
