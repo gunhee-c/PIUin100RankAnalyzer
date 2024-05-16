@@ -258,10 +258,8 @@ def print_search_user(username, exact = False):
 def return_user(username, userID):
     if len(userID) == 4:
         userID = "#" + str(userID)
-    for user in user_ranks:
-        if user["username"] == username and user["userID"] == userID:
-            return user 
-    return None
+    username_full = username + " " + userID
+    return user_ranks[username_full]
 
 def return_user_with_name(username):
     username_upper = username.upper()
