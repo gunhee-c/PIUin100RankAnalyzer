@@ -4,6 +4,20 @@ import pandas as pd
 version_all = ["PHOENIX", "XX", "OLD"]
 songtype_all = ["Arcade", "Remix", "Full Song", "Short Cut"]
 
+current_date = "2024.05.16"
+current_version = "PHOENIX"
+current_patch = "1.0.8"
+
+user_ranks = json.load(open(f"datamodules/in100RankData/{current_date}/user_data.json"))
+
+total_steps_count = json.load(open(f"datamodules/{current_version}/{current_patch}/total_steps_count.json"))
+
+duplicate_users = json.load(open("duplicate_users.json"))
+
+#level_weight = {20: 8, 21: 10, 22: 14, 23: 22, 24: 38, 25: 70, 26: 134, 27: 262, 28: 518}
+level_weight = {20: 8, 21: 10, 22: 14, 23: 20, 24: 28, 25: 38, 26: 50, 27: 64, 28: 70}
+rank_weight = lambda x: (200-x)/200
+
 def DA_0():
     return [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
 def DA_l():
@@ -150,15 +164,6 @@ def filter_rankcount(data, mode = "Full", levels = [20,28], songtype = songtype_
     else:
         return filter_rankcount_unit(data, mode, levels, songtype, version)
 
-user_ranks = json.load(open("user_rankdata.json"))
-
-total_steps_count = json.load(open("total_steps_count.json"))
-
-duplicate_users = json.load(open("duplicate_users.json"))
-
-#level_weight = {20: 8, 21: 10, 22: 14, 23: 22, 24: 38, 25: 70, 26: 134, 27: 262, 28: 518}
-level_weight = {20: 8, 21: 10, 22: 14, 23: 20, 24: 28, 25: 38, 26: 50, 27: 64, 28: 70}
-rank_weight = lambda x: (200-x)/200
 
 def rankdata_unit_str(data):
     mode = "D"
