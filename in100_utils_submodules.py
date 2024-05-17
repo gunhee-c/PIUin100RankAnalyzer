@@ -108,6 +108,11 @@ def total_count_full_weighted(data):
             total += level*rank_weight(data[level][ranks]["rank"])*level_weight[level]
     return total
 
+def is_user_valid(username, userid):
+    if username in user_names_dict:
+        if  userid in user_names_dict[username]:
+            return True
+    return False
 
 
 def return_user_with_name(username):
@@ -117,6 +122,9 @@ def return_user_with_name(username):
         username_upper = username.upper()
     else:
         userID = return_user_id_list(username_upper)[0]
+    test = is_user_valid(username_upper, userID)
+    if not test:
+        return None
     return return_user(username_upper, userID)
 
 def return_user(username, userID):
@@ -138,3 +146,8 @@ def color_rows_comparison(row, userAkey):
     else:
         color = 'rgba(125, 50, 50, 0.5)' if row['Winner'] != userAkey else 'rgba(50,50,125, 0.5)'
     return ['background-color: ' + color] * len(row)
+
+def color_by_level_and_rank(dataframe_raw):
+    dataframe_new = dataframe_raw.copy()
+    dataframe_new = dataframe_new.style.applymap(lambda x: 'color: red' if x == 1 else 'color: blue' if x == 2 else 'color: green' if x == 3 else 'color: black')
+    return dataframe_new

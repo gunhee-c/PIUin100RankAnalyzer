@@ -140,7 +140,7 @@ def aggregate_dataframe(userA_data, userB_data, userA, userB):
         mode = "S" if item["mode"] == "Single" else "D"
         key = item["song"] + " " + mode + str(item["level"])
         if key not in pd_keys:
-            pd_list.append(create_dict(item, userA, userB))
+            pd_list.append(create_comparison_dict(item, userA, userB))
             pd_keys.append(key)
         else:
             for occupied in pd_list:
@@ -169,7 +169,7 @@ def aggregate_dataframe(userA_data, userB_data, userA, userB):
     
     return pd_aggregated
 
-def create_dict(item, userA, userB):
+def create_comparison_dict(item, userA, userB):
     userAkey = userA["key"]
     userBkey = userB["key"]
     Arank = userA["username"] + "_rank"
@@ -198,10 +198,6 @@ def refine_solo_dataframe(dataframe_raw):
     dataframe_new = dataframe_raw[["song", "mode/level", "rank", "score"]]
     return dataframe_new
 
-def color_by_level_and_rank(dataframe_raw):
-    dataframe_new = dataframe_raw.copy()
-    dataframe_new = dataframe_new.style.applymap(lambda x: 'color: red' if x == 1 else 'color: blue' if x == 2 else 'color: green' if x == 3 else 'color: black')
-    return dataframe_new
 
 #data_sorted_pandas, achievement_rate, ranks, ranks_by_level
 def rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all, sortme = "score", sort_all = False):
@@ -235,16 +231,16 @@ def rankdata(username, mode = "Full", levels = [20,28], songtype = songtype_all,
 def rankdata_compare_total_counts(userAcount, userBcount, userAdata, userBdata):
     userA_total_count = total_count(userAcount)
     userB_total_count = total_count(userBcount)
-    userA_total_count_weighted = total_count_weighted(userAcount)
-    userB_total_count_weighted = total_count_weighted(userBcount)
-    userA_total_count_with_rank = total_count_with_rank(userAdata)
-    userB_total_count_with_rank = total_count_with_rank(userBdata)
-    userA_total_count_with_rank_weighted = total_count_with_rank_weighted(userAdata)
-    userB_total_count_with_rank_weighted = total_count_with_rank_weighted(userBdata)
+    userA_total_count_level_weighted = total_count_level_weighted(userAcount)
+    userB_total_count_level_weighted = total_count_level_weighted(userBcount)
+    userA_total_count_rank_weighted = total_count_rank_weighted(userAdata)
+    userB_total_count_rank_weighted = total_count_rank_weighted(userBdata)
+    userA_total_count_full_weighted = total_count_full_weighted(userAdata)
+    userB_total_count_full_weighted = total_count_full_weighted(userBdata)
     return [[userA_total_count, userB_total_count],
-            [userA_total_count_weighted, userB_total_count_weighted], 
-            [userA_total_count_with_rank, userB_total_count_with_rank], 
-            [userA_total_count_with_rank_weighted, userB_total_count_with_rank_weighted]]
+            [userA_total_count_level_weighted, userB_total_count_level_weighted], 
+            [userA_total_count_rank_weighted, userB_total_count_rank_weighted], 
+            [userA_total_count_full_weighted, userB_total_count_full_weighted]]
 
 
 #user_comparison:
