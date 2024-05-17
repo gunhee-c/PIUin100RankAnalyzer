@@ -1,102 +1,10 @@
 import streamlit as st
 import json
 import pandas as pd
-version_all = ["PHOENIX", "XX", "OLD"]
-songtype_all = ["Arcade", "Remix", "Full Song", "Short Cut"]
-
-current_date = "2024.05.16"
-current_version = "PHOENIX"
-current_patch = "1.0.8"
-
-user_ranks = json.load(open(f"datamodules/in100RankData/{current_date}/user_data.json"))
-
-user_names_dict = json.load(open(f"datamodules/in100RankData/{current_date}/user_dict.json"))
-
-total_steps_count = json.load(open(f"datamodules/{current_version}/{current_patch}/total_steps_count.json"))
+from in100_utils_variable import *
+from in100_utils_submodules import *
 
 
-
-#level_weight = {20: 8, 21: 10, 22: 14, 23: 22, 24: 38, 25: 70, 26: 134, 27: 262, 28: 518}
-level_weight = {20: 8, 21: 10, 22: 14, 23: 20, 24: 28, 25: 38, 26: 50, 27: 64, 28: 70}
-rank_weight = lambda x: (200-x)/200
-
-def DA_0():
-    return [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
-def DA_l():
-    return [[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]]]
-
-def songtype_to_int(songtype):
-    if songtype == "Arcade":
-        return 0
-    elif songtype == "Remix":
-        return 1
-    elif songtype == "Full Song":
-        return 2
-    elif songtype == "Short Cut":
-        return 3
-    else:
-        return -1
-
-def version_to_int(version):
-    if version == "PHOENIX":
-        return 0
-    elif version == "XX":
-        return 1
-    else:
-        return 2
-
-def restrict_level_range(mode, levels):
-    ans = [0,0]
-    ans[0] = levels[0]
-    ans[1] = levels[1]
-    #print(levels)
-    if mode == "Single":
-        if levels[1] > 26: ans[1] = 26
-    else:
-        if levels[1] > 28: ans[1] = 28
-    if levels[0] < 20:
-        ans[0] = 20
-    if levels[0] > levels[1]:
-        return [-1,-1]
-    return ans
-
-def add_dict(a, b):
-    for item in b:
-        if item in a:
-            a[item] += b[item]
-        else:
-            a[item] = b[item]
-    return a
-
-def get_song_version_int_list(songtype, version):
-    songtypeint = []
-    for item in songtype:
-        songtypeint.append(songtype_to_int(item))
-    versionint = []
-    for item in version:
-        versionint.append(version_to_int(item))
-    return songtypeint, versionint
-
-def filter_total_count_unit(total_count, mode, levels =[20,28], songtype = songtype_all, version = version_all):
-    levels = restrict_level_range(mode, levels)
-    if levels[0] == -1:
-        print("Error in level range")
-        return {}
-    count = {key: 0 for key in range(levels[0], levels[1]+1)}
-    #print(count)
-    songtypeint, versionint = get_song_version_int_list(songtype, version)
-    #print(data["single_counts"])
-    for level in range(levels[0], levels[1]+1):
-        str_level = str(level)
-        for songtype in songtypeint:
-            for version in versionint:
-                if mode == "Single":
-                    #print(count[level])
-                    #print(data["single_counts"][str_level][songtype][version])
-                    count[level] += total_count["Single"][str_level][songtype][version]
-                else:
-                    count[level] += total_count["Double"][str_level][songtype][version]
-    return count
 
 def filter_total_count(total_count, mode = "Full", levels =[20,28], songtype = songtype_all, version = version_all):
     if mode == "Full":
@@ -106,28 +14,6 @@ def filter_total_count(total_count, mode = "Full", levels =[20,28], songtype = s
     else:
         return filter_total_count_unit(total_count, mode, levels, songtype, version)
 
-def filter_rankdata_unit(data, mode, levels =[20,28], songtype = songtype_all, version = version_all):
-
-    levels = restrict_level_range(mode, levels)
-    if levels[0] == -1:
-        print("Error in level range")
-        return {}
-    filtered_rank = {key: [] for key in range(levels[0], levels[1]+1)}
-
-    songtypeint, versionint = get_song_version_int_list(songtype, version)
-    #print(songtypeint, versionint)
-    for level in range(levels[0], levels[1]+1):
-        str_level = str(level)
-        for songtype in songtypeint:
-            for version in versionint:
-                    if mode == "Single":
-                        for item in data["single_data"][str_level][songtype][version]:
-                            filtered_rank[level].append(item)
-                    else:
-                        for item in data["double_data"][str_level][songtype][version]:
-                            filtered_rank[level].append(item) 
-    return filtered_rank
-
 def filter_rankdata(data, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all):
     if mode == "Full":
         dicta = filter_rankdata_unit(data, "Single", levels, songtype, version)
@@ -135,28 +21,6 @@ def filter_rankdata(data, mode = "Full", levels = [20,28], songtype = songtype_a
         return add_dict(dicta, dictb)
     else:
         return filter_rankdata_unit(data, mode, levels, songtype, version)
-
-def filter_rankcount_unit(data, mode, levels = [20,28], songtype = songtype_all, version = version_all):
-    levels = restrict_level_range(mode, levels)
-
-    if levels[0] == -1:
-        print("Error in level range")
-        return {}
-    count = {key: 0 for key in range(levels[0], levels[1]+1)}
-    #print(count)
-    songtypeint, versionint = get_song_version_int_list(songtype, version)
-    #print(data["single_counts"])
-    for level in range(levels[0], levels[1]+1):
-        str_level = str(level)
-        for songtype in songtypeint:
-            for version in versionint:
-                if mode == "Single":
-                    #print(count[level])
-                    #print(data["single_counts"][str_level][songtype][version])
-                    count[level] += data["single_counts"][str_level][songtype][version]
-                else:
-                    count[level] += data["double_counts"][str_level][songtype][version]
-    return count
 
 def filter_rankcount(data, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all):
     if mode == "Full":
@@ -166,38 +30,23 @@ def filter_rankcount(data, mode = "Full", levels = [20,28], songtype = songtype_
     else:
         return filter_rankcount_unit(data, mode, levels, songtype, version)
 
+def rankdata_to_str(data):
+    mode = "S" if data["mode"] == "Single" else "D"
 
-def rankdata_unit_str(data):
-    mode = "D"
-    if data["mode"] == "Single": mode = "S"
 
     return data["song"] + " " + mode + str(data["level"]) + ": rank " + str(data["rank"]) + ", score: " + str(data["score"])
-    
-def total_count(data):
-    total = 0
-    for level in data:
-        total += data[level]
-    return total
 
-def total_count_weighted(data):
-    total = 0
-    for level in data:
-        total += data[level]*level_weight[level]
-    return total
+#apply this on filtered count
+def total_count(data, level_weight = False, rank_weight = False):
+    if level_weight == False and rank_weight == False:
+        return total_count_raw(data)
+    elif level_weight == True and rank_weight == False:
+        return total_count_level_weighted(data)
+    elif level_weight == False and rank_weight == True:
+        return total_count_rank_weighted(data)
+    else:
+        return total_count_full_weighted(data)
 
-def total_count_with_rank(data):
-    total = 0
-    for level in data:
-        for ranks in range(len(data[level])):
-            total += level*rank_weight(data[level][ranks]["rank"])
-    return total
-
-def total_count_with_rank_weighted(data):
-    total = 0
-    for level in data:
-        for ranks in range(len(data[level])):
-            total += level*rank_weight(data[level][ranks]["rank"])*level_weight[level]
-    return total
 
 def sort_rankdata(data, sort_key = "score", sort_all = False):
     if sort_all == False:
@@ -218,10 +67,6 @@ def sort_rankdata(data, sort_key = "score", sort_all = False):
         elif sort_key == "rank":
             total_list.sort(key = lambda x: x['rank'])
     return total_list
-
-#유저명에 해당하는 유저의 ID 리스트를 반환
-def return_user_id_list(username):
-    return user_names_dict[username.upper()]
 
 #해당 str을 포함하는 유저들의 ID 리스트와 클리어데이터(숫자만)를 반환
 def search_user(username, exact = False):
@@ -255,20 +100,8 @@ def print_search_user(username, exact = False):
         strs.append("")
     return strs
 
-def return_user(username, userID):
-    if len(userID) == 4:
-        userID = "#" + str(userID)
-    username_full = username + " " + userID
-    return user_ranks[username_full]
 
-def return_user_with_name(username):
-    username_upper = username.upper()
-    if " " in username:
-        username, userID = username.split(" ")
-        username_upper = username.upper()
-    else:
-        userID = return_user_id_list(username_upper)[0]
-    return return_user(username_upper, userID)
+
 
 def rankdata_raw(username, mode = "Full", levels = [20,28], songtype = songtype_all, version = version_all):
     user = return_user_with_name(username)
@@ -289,15 +122,7 @@ def rankdata_compare_raw(userAname, userBname, mode = "Full", levels = [20,28], 
     total_filtered = filter_total_count(total_steps_count, mode, levels, songtype, version)
     return userAdata, userBdata, userAcount, userBcount, total_filtered
 
-def color_rows(row, userAkey):
-    # Use RGBA for semi-transparent colors (the last number is the alpha value)
-    # The alpha value can be adjusted between 0 (fully transparent) and 1 (fully opaque)
-    # Here we set it to 0.5 to blend the color with the white background, making it lighter
-    if row["Winner"] == "DRAW":
-        color = 'rgba(160, 160, 60, 0.5)'
-    else:
-        color = 'rgba(125, 50, 50, 0.5)' if row['Winner'] != userAkey else 'rgba(50,50,125, 0.5)'
-    return ['background-color: ' + color] * len(row)
+
 
 def aggregate_dataframe(userA_data, userB_data, userA, userB):
     aggregated_dict = sort_rankdata(add_dict(userA_data, userB_data), "score", False)
@@ -312,16 +137,13 @@ def aggregate_dataframe(userA_data, userB_data, userA, userB):
     pd_list = []
     pd_keys = []
     for item in aggregated_dict:
-        #print(item)
-        mode = "D"
-        if item["mode"] == "Single": mode = "S"
+        mode = "S" if item["mode"] == "Single" else "D"
         key = item["song"] + " " + mode + str(item["level"])
         if key not in pd_keys:
             pd_list.append(create_dict(item, userA, userB))
             pd_keys.append(key)
         else:
             for occupied in pd_list:
-                #print(item)
                 if occupied["key"] == key:
                     if occupied[Ascore] == 0:
                         occupied[Arank] = item["rank"]
@@ -343,7 +165,7 @@ def aggregate_dataframe(userA_data, userB_data, userA, userB):
     pd_aggregated["Winner"] = winner
     pd_aggregated = pd_aggregated.drop("key", axis = 1)
     
-    pd_aggregated = pd_aggregated.style.apply(color_rows, userAkey = userAkey, axis = 1)
+    pd_aggregated = pd_aggregated.style.apply(color_rows_comparison, userAkey = userAkey, axis = 1)
     
     return pd_aggregated
 
@@ -354,8 +176,7 @@ def create_dict(item, userA, userB):
     Brank = userB["username"] + "_rank"
     Ascore = userA["username"] + "_score"
     Bscore = userB["username"] + "_score"
-    mode = "D"
-    if item["mode"] == "Single": mode = "S"
+    mode = "S" if item["mode"] == "Single" else "D"
     level_short = mode + str(item["level"])
     key = item["song"] + " " + level_short
     if item["username"] == userAkey[:-6]:

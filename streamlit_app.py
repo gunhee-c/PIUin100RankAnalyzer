@@ -1,5 +1,5 @@
 from in100_utils import *
-
+from streamlit_text import *
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
@@ -45,19 +45,14 @@ def gather_userdata_of_two(key_name):
     return user_key1, user_key2, mode, min_level, max_level, songtype_list, version_list
 
 def main():
-    st.header("PIU in 100 data Analyzer")
-    st.write("This is a simple web app that analyzes the data from the PIU in 100 rank dataset.")
-    st.write("Currently the data is up to 05/09/2024")
+    main_text()
 
 
-    find_user, single_player, two_player, update= st.tabs(["Find User", "Single Player Analysis", "Player comparison", "updates"])
+    find_user, single_player, two_player, update= st.tabs(["Find User & Song", "Single Player Analysis", "Player comparison", "updates"])
 
     with find_user:
-        st.write("in this page you can search a user's name and ID")
-        st.header("Find User")
-        st.write("This will provide user's ID and his/her ranking data")
-        st.write("All users including your response will be shown")
-        st.write("If there are other users with same username, you need to provide your userID to get your data.")
+        find_user_song_text()
+
         user_name = st.text_input("Enter the user's name")
         if user_name != "":
             #user_info = search_user(user_name)
