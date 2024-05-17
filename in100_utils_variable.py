@@ -1,5 +1,5 @@
 import json
-
+import pandas as pd
 version_all = ["PHOENIX", "XX", "OLD"]
 songtype_all = ["Arcade", "Remix", "Full Song", "Short Cut"]
 
@@ -19,8 +19,12 @@ user_names_dict = json.load(open(f"datamodules/in100RankData/{current_date}/user
 
 total_steps_count = json.load(open(f"datamodules/{current_version}/{current_patch}/total_steps_count.json"))
 
+songlist_csv = pd.read_csv(f"datamodules/{current_version}/{current_patch}/songList_temp.csv")
 
-
+rankdata_by_level = {}
+for i in range(20,27):
+    rankdata_by_level[str(i)] = json.load(open(f"datamodules/in100RankData/{current_date}/rankdata_{i}.json"))
+rankdata_by_level["27over"] = json.load(open(f"datamodules/in100RankData/{current_date}/rankdata_27over.json"))
 
 def DA_0():
     return [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]

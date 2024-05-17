@@ -60,3 +60,8 @@ def show_scatterplot(ranks_by_level):
     # Display the plot in Streamlit
     st.pyplot(fig)
 
+def show_user_comparison(user_comparison):
+    pass
+
+def show_total_count_comparison(total_count_comparison):
+    pass

@@ -151,3 +151,19 @@ def color_by_level_and_rank(dataframe_raw):
     dataframe_new = dataframe_raw.copy()
     dataframe_new = dataframe_new.style.applymap(lambda x: 'color: red' if x == 1 else 'color: blue' if x == 2 else 'color: green' if x == 3 else 'color: black')
     return dataframe_new
+
+def name_in_songlist(songlist, name, index):
+    if name.lower() in songlist["song"][index].lower():
+        return True
+    if name.lower() in songlist["kr_song"][index].lower():
+        return True
+    if name.lower() in songlist["kr_song_proxy"][index].lower():
+        return True
+    return False
+
+def song_finder(songlist, name):
+    anslist = []
+    for i in range(len(songlist["song"])):
+        if name_in_songlist(songlist, name, i):
+            anslist.append(songlist["song"][i])
+    return anslist

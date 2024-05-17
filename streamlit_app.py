@@ -85,6 +85,8 @@ def main():
 
         user_comparison, total_count_comparison, aggregated_dataframe = rankdata_compare(user_key1, user_key2, mode = mode, levels = [min_level, max_level], songtype = songtype_list, version = version_list)
         st.dataframe(aggregated_dataframe)
+        show_user_comparison(user_comparison)
+        show_total_count_comparison(total_count_comparison)
     with update:
         st.write("05/13: First version of the app is released")
         st.write("05/16: Data update")
