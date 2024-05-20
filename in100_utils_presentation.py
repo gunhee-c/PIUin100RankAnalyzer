@@ -1,6 +1,6 @@
 import streamlit as st
 import matplotlib.pyplot as plt
-
+import random as rd
 
 def show_achievement(achievements):
     levels = list(achievements.keys())
