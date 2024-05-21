@@ -50,7 +50,7 @@ def main():
     main_text()
 
 
-    find_user, single_player, two_player, update= st.tabs(["Find User & Song", "Single Player Analysis", "Player comparison", "updates"])
+    find_user, single_player, two_player, update, test = st.tabs(["Find User & Song", "Single Player Analysis", "Player comparison", "updates", "test"])
 
     with find_user:
         find_user_song_text()
@@ -90,6 +90,19 @@ def main():
     with update:
         st.write("05/13: First version of the app is released")
         st.write("05/16: Data update")
+
+    with test:
+        st.write("This is a test page // currently testing json interaction")
+        dict_sample = {}
+        for i in range(3):
+            a,b = two_inputs(f"test{i}")
+            dict_sample[a] = b
+        save_button = st.button("save")
+        if save_button:            
+            st.write(dict_sample)
+            test_dict.update(dict_sample)
+            json.dump(test_dict, open("testme.json", "w"))
+
 
 
 
@@ -230,6 +243,13 @@ def three_filter_inputs(key_name):
 
     return mode, min_level, max_level
 
+def two_inputs(key_name):
+    col1, col2 = st.columns(2)
+    with col1:
+        input1 = st.text_input("input1", key = key_name + "input1")
+    with col2:
+        input2 = st.text_input("input2", key = key_name + "input2")
+    return input1, input2
 
 if __name__ == "__main__":
     main()

@@ -21,6 +21,8 @@ total_steps_count = json.load(open(f"datamodules/{current_version}/{current_patc
 
 songlist_csv = pd.read_csv(f"datamodules/{current_version}/{current_patch}/songList_temp.csv")
 
+test_dict = json.load(open("testme.json"))
+
 rankdata_by_level = {}
 for i in range(20,27):
     rankdata_by_level[str(i)] = json.load(open(f"datamodules/in100RankData/{current_date}/rankdata_{i}.json"))
