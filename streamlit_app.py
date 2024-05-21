@@ -94,6 +94,7 @@ def main():
     with test:
         st.write("This is a test page // currently testing json interaction")
         dict_sample = {}
+        st.write(test_dict)
         for i in range(3):
             a,b = two_inputs(f"test{i}")
             dict_sample[a] = b
@@ -101,7 +102,9 @@ def main():
         if save_button:            
             st.write(dict_sample)
             test_dict.update(dict_sample)
+            st.write(test_dict)
             json.dump(test_dict, open("testme.json", "w"))
+            
 
 
 
