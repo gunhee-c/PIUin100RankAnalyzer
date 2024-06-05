@@ -6,7 +6,7 @@ import os
 
 
 current_version = "PHOENIX"
-current_patch = "1.0.8"
+current_patch = "2.0.0"
 url_substr1 = "https://piugame.com/leaderboard/over_ranking.php?lv="
 url_substr2 = "&search=&&page="
 num_pages_by_level = {"20": 19, "21": 19, "22": 14, "23": 10, "24": 7, "25": 4, "26": 2, "27over": 1}

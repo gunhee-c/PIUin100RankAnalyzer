@@ -5,7 +5,7 @@ songtype_all = ["Arcade", "Remix", "Full Song", "Short Cut"]
 
 current_date = "2024.05.16"
 current_version = "PHOENIX"
-current_patch = "1.0.8"
+current_patch = "2.0.0"
 
 #level_weight = {20: 8, 21: 10, 22: 14, 23: 22, 24: 38, 25: 70, 26: 134, 27: 262, 28: 518}
 level_weight = {20: 8, 21: 10, 22: 14, 23: 20, 24: 28, 25: 38, 26: 50, 27: 64, 28: 70}

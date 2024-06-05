@@ -112,7 +112,7 @@ def save_rankdata_by_level(file_path, rankdata_by_level, level):
         for instance in rankdata_by_level[item]:
             json_total[item].append(instance.to_dict())
     with open(f"{file_path}/rankdata_{level}.json", "w") as file:
-        json.dump(json_total, file, ensure_ascii=False)
+        json.dump(json_total, file)
         #json.dump(json_total, file, cls=RankDataEncoder)
 
 
@@ -120,8 +120,8 @@ def save_rankdata_by_level(file_path, rankdata_by_level, level):
 
 if __name__ == "__main__":
     current_version = "PHOENIX"
-    current_patch = "1.0.8"
-    current_date = "2024.05.16"
+    current_patch = "2.0.0"
+    current_date = "2024.06.05"
     with open(f"datamodules/{current_version}/{current_patch}/subURLs_list.json", "r") as file:
         subURLs = json.load(file)
     current_path = "datamodules/in100RankData/"+current_date

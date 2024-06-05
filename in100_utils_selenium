@@ -1,0 +1,134 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from bs4 import BeautifulSoup
+import time
+import re
+
+
+
+def return_mode(soup):
+    soup_mode = str(soup.find(class_ = "tw"))
+    if re.search(r'full/(.*)_text', soup_mode).group(1) == "s":
+        return "Single"
+    return "Double"
+
+def return_song_name(soup):
+    return soup.find(class_ = "song_name").get_text()
+
+def return_score(soup):
+    return soup.find(class_ = "txt_v").get_text()
+
+def return_grade(soup):
+    soup_grade = str(soup.find(class_ = "img"))
+    return re.search(r'grade/(.*).png', soup_grade).group(1)
+
+def return_plate(soup):
+    soup_grade = str(soup.find(class_ = "img st1"))
+    return re.search(r'plate/(.*).png', soup_grade).group(1)
+
+def parse_soup_into_record_list(soup):
+    if soup.find(class_ = "no_con") != None:
+        return []
+    soup_full = soup.find(class_ = "my_best_scoreList flex wrap")
+    soup_list_raw = soup_full.find_all(class_ = "in")
+    ans = []
+    if len(soup_list_raw) == 0:
+        return []
+    for item in soup_list_raw:
+        game_mode = return_mode(item)
+        song_name = return_song_name(item)
+        score = return_score(item)
+        grade = return_grade(item)
+        plate = return_plate(item)
+        ans.append({"game_mode": game_mode, "song_name": song_name, "score": score, "grade": grade, "plate": plate})
+
+    
+    return ans
+
+def crawl_record_by_level_unit(driver, level, page):
+    driver.get(f'https://piugame.com/my_page/my_best_score.php?lv={level}&&page={page}')
+    time.sleep(5)
+    page_source = driver.page_source
+    soup = BeautifulSoup(page_source, 'html.parser')
+    record = parse_soup_into_record_list(soup)
+    #print(soup.find(class_ = "xi last"))
+    hasnext = soup.find(class_ = "xi last") != None
+    return record, hasnext
+
+def crawl_record_by_level(driver, level):
+    get_next = True
+    total_record = []
+    page_index = 1
+    while(get_next):
+        print("level: " + str(level)+ ", current index:" + str(page_index))
+        record, get_next = crawl_record_by_level_unit(driver, level, page_index)
+        for item in record:
+            total_record.append(item)
+        time.sleep(5)
+        page_index += 1
+
+    return total_record
+
+#returns: song name, score, grade, plate
+
+
+# Set up the Selenium WebDriver
+def selenium_login(ID, PW):
+    driver = webdriver.Chrome()
+    # Navigate to the login page
+    driver.get('https://piugame.com')
+
+    # Find the username and password input fields and enter your credentials
+    username = driver.find_element(By.NAME, 'mb_id')  # Adjust the name attribute if necessary
+    password = driver.find_element(By.NAME, 'mb_password')  # Adjust the name attribute if necessary
+
+    username.send_keys(ID)
+    password.send_keys(PW)
+    password.send_keys(Keys.RETURN)
+    #
+    time.sleep(5)
+    return driver
+    # Submit the login form
+    #river.find_element(By.CLASS_NAME, 'btn st1').click()
+    # Wait for the page to load (adjust the sleep time if necessary)
+
+
+def crawl_recent_records(driver):
+    driver.get('https://piugame.com/my_page/recently_played.php')
+    time.sleep(3)
+    page_source = driver.page_source
+    soup = BeautifulSoup(page_source, 'html.parser')
+    return soup
+
+def get_recent_plays_list(soup):
+    return soup.find_all(class_ = "in bgfix")
+
+def find_level(soup):
+    soupstr = str(soup)
+    mode = re.search(r'full/(.*)_text', soupstr).group(1)
+    if mode == "d":
+        mode_full = "Double"
+    elif mode == "s":
+        mode_full = "Single"
+    else:
+        mode_full = "Unknown"
+    pattern = r'num_(.*?).png'
+    level = re.findall(pattern, soupstr)
+    levelstr = level[0] + level[1]
+    return mode_full + levelstr
+
+def analyze_recent_plays(souplist):
+    songname = []
+    scores = []
+    is_cleared = []
+    levels = []
+    for item in souplist:
+        song = item.find(class_ = "song_name flex").get_text()
+        level = find_level(item)
+        songname.append(song + " " + level)
+        scores.append(item.find(class_ = "tx").get_text())
+        levels.append(find_level(item))
+        is_cleared.append("plate" in str(item))
+    return songname, scores, is_cleared
