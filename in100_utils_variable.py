@@ -3,7 +3,7 @@ import pandas as pd
 version_all = ["PHOENIX", "XX", "OLD"]
 songtype_all = ["Arcade", "Remix", "Full Song", "Short Cut"]
 
-current_date = "2024.05.16"
+current_date = "2024.06.05"
 current_version = "PHOENIX"
 current_patch = "2.0.0"
 
