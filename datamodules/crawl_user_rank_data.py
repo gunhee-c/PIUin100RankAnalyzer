@@ -116,14 +116,41 @@ def save_rankdata_by_level(file_path, rankdata_by_level, level):
         #json.dump(json_total, file, cls=RankDataEncoder)
 
 
+def DA_0():
+    return [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
+def DA_l():
+    return [[[],[],[]],[[],[],[]],[[],[],[]],[[],[],[]]]
+
+def songtype_to_int(songtype):
+    if songtype == "Arcade":
+        return 0
+    elif songtype == "Remix":
+        return 1
+    elif songtype == "Full Song":
+        return 2
+    elif songtype == "Short Cut":
+        return 3
+    else:
+        return -1
+
+def version_to_int(version):
+    if version == "PHOENIX":
+        return 0
+    elif version == "XX":
+        return 1
+    else:
+        return 2
 
 
 if __name__ == "__main__":
+
     current_version = "PHOENIX"
     current_patch = "2.0.0"
     current_date = "2024.06.05"
     with open(f"datamodules/{current_version}/{current_patch}/subURLs_list.json", "r") as file:
         subURLs = json.load(file)
+    #todo implement songlist here
+    songlist = pd.read_csv(f"datamodules/{current_version}/{current_patch}/songList_temp.csv")
     current_path = "datamodules/in100RankData/"+current_date
     os.makedirs(current_path, exist_ok=True)
     for level in subURLs:
