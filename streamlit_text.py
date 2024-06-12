@@ -2,7 +2,7 @@ import streamlit as st
 def main_text():
     st.header("PIU in 100 data Analyzer")
     st.write("This is a simple web app that analyzes the data from the PIU in 100 rank dataset.")
-    st.write("Currently the data is up to 05/09/2024")
+    st.write("Currently the data is up to 06/12/2024")
 
 def find_user_song_text():
     st.write("in this page you can search a user's name and ID")
