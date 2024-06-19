@@ -146,7 +146,7 @@ if __name__ == "__main__":
 
     current_version = "PHOENIX"
     current_patch = "2.0.0"
-    current_date = "2024.06.12"
+    current_date = "2024.06.19"
     with open(f"datamodules/{current_version}/{current_patch}/subURLs_list.json", "r") as file:
         subURLs = json.load(file)
     #todo implement songlist here
